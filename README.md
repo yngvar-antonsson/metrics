@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/tarantool/metrics.svg?branch=master)](https://travis-ci.com/tarantool/metrics)
+[![Build Status](https://github.com/ZolotarevIgor-mail-ru/metrics/workflows/Tests/badge.svg?branch=master)](https://github.com/ZolotarevIgor-mail-ru/metrics/actions)
 
 # Metrics
 

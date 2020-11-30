@@ -1,4 +1,4 @@
-name: Matrix build
+name: Tests
 on: [push]
 jobs:
   test:
@@ -26,11 +26,11 @@ jobs:
       - name: deps
         run: apk add --update alpine-sdk make curl git cmake gcc
 
-      - name: lint
-        run: make lint
+      # - name: lint
+      #   run: make lint
 
-      - name: test
-        run: make test_with_coverage_report
+      # - name: test
+      #   run: make test_with_coverage_report
 
   packpack:
     needs: test
@@ -60,13 +60,13 @@ jobs:
         run: |
           gem install package_cloud
 
-      - name: packpack
-        run: |
-          git clone https://github.com/packpack/packpack.git packpack
-          ${{ matrix.os }} packpack/packpack
-          ls -l build/
+      # - name: packpack
+      #   run: |
+      #     git clone https://github.com/packpack/packpack.git packpack
+      #     ${{ matrix.os }} packpack/packpack
+      #     ls -l build/
 
-      - name: packagecloud
-        run: ${{ secrets.PACKAGECLOUD_TOKEN }} package_cloud push --verbose tarantool/${{ matrix.repository }} build/*.deb
+      # - name: packagecloud
+      #   run: ${{ secrets.PACKAGECLOUD_TOKEN }} package_cloud push --verbose tarantool/${{ matrix.repository }} build/*.deb
         # env:
         #   PACKAGECLOUD_TOKEN:

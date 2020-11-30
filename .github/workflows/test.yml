@@ -30,3 +30,13 @@ jobs:
 
       - name: test
         run: make test_with_coverage_report
+
+      - name: setup docker
+        uses: actions-hub/docker@master
+
+      - name: packpack
+        if: ${{ matrix.cartridge == '' && matrix.os  == 'tarantool/tarantool:2.2' }}
+        run: |
+          git clone https://github.com/packpack/packpack.git packpack
+          packpack/packpack
+          ls -l build/

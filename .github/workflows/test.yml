@@ -58,6 +58,8 @@ jobs:
       DIST: ${{ matrix.os.dist }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6'
@@ -72,6 +74,5 @@ jobs:
           packpack/packpack
           ls -l build/
 
-      - name: packagecloud
-        run: package_cloud push tarantool/${{ matrix.repository }}/$OS/$DIST build/*.rpm
-
+      # - name: packagecloud
+      #   run: package_cloud push tarantool/${{ matrix.repository }}/$OS/$DIST build/*.rpm

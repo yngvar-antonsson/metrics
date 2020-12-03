@@ -76,4 +76,3 @@ jobs:
 
       # - name: packagecloud
       #   run: package_cloud push tarantool/${{ matrix.repository }}/$OS/$DIST build/*.rpm
-

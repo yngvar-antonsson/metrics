@@ -1,39 +1,55 @@
 name: Deploy to packagecloud
-on: [release]
+on:
+  push:
+    tags:
+       - '*'
 
 jobs:
   deploy:
+    if: startsWith(github.ref, 'refs/tags')
     strategy:
       fail-fast: false
       matrix:
         os:
-          - OS=el DIST=6
-          - OS=el DIST=7
-          - OS=fedora DIST=26
-          - OS=fedora DIST=27
-          - OS=fedora DIST=28
-          - OS=fedora DIST=29
+          - name: el
+            dist: 7
+          # - name: fedora
+          #   dist: 26
+          # - name: fedora
+          #   dist: 27
+          # - name: fedora
+          #   dist: 28
+          # - name: fedora
+          #   dist: 29
         repository:
           - "1_10"
-          - "2x"
-          - "2_2"
-          - "2_3"
-          - "2_4"
+          # - "2x"
+          # - "2_2"
+          # - "2_3"
+          # - "2_4"
     runs-on: ubuntu-latest
+    env:
+      PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      OS: ${{ matrix.os.name }}
+      DIST: ${{ matrix.os.dist }}
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+
+      - name: deps
+        run: |
+          gem install package_cloud
+          echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: packpack
         run: |
-          git clone https://github.com/packpack/packpack.git packpack
-          ${{ matrix.os }} packpack/packpack
-          ls -l build/
+          echo $VERSION
+          # git clone https://github.com/packpack/packpack.git packpack
+          # packpack/packpack
+          # ls -l build/
 
-      - name: packagecloud
-        uses: docker://lpenz/ghaction-packagecloud:v0.1
-        with:
-          user: tarantool
-          repository: ${{ matrix.repository }}
-          directory: build
-        env:
-          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+      # - name: packagecloud
+      #   run: package_cloud push tarantool/${{ matrix.repository }}/$OS/$DIST build/*.rpm
+

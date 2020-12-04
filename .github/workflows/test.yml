@@ -1,5 +1,9 @@
 name: Tests
-on: [push]
+on:
+  push:
+    branches:
+     - '*'
+  pull_request:
 jobs:
   # test:
   #   strategy:
@@ -38,8 +42,8 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - name: el
-            dist: 6
+          # - name: el
+          #   dist: 6
           - name: el
             dist: 7
           # - OS=fedora DIST=26
@@ -58,8 +62,8 @@ jobs:
       DIST: ${{ matrix.os.dist }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+        # with:
+        #   fetch-depth: 0
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '2.6'
@@ -70,9 +74,10 @@ jobs:
       - name: packpack
         run: |
           echo '$OS $DIST'
-          git clone https://github.com/packpack/packpack.git packpack
-          packpack/packpack
-          ls -l build/
+
+          # git clone https://github.com/packpack/packpack.git packpack
+          # packpack/packpack
+          # ls -l build/
 
       # - name: packagecloud
       #   run: package_cloud push tarantool/${{ matrix.repository }}/$OS/$DIST build/*.rpm
